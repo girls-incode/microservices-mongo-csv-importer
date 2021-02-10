@@ -18,11 +18,9 @@ interface Row {
 
 const router = express.Router();
 
-// all data
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await Emissions.find({}).lean();
-        // console.log(data);
         if (data) res.status(200).json(data);
     } catch (error) {
         res.status(400).send(error)
@@ -33,7 +31,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/sectors', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await Emissions.aggregate([
-            { $group: { _id: "$sector" } },
+            { $group: { _id: '$sector' } },
             { $sort: { _id: 1 } },
         ]);
 
@@ -43,11 +41,21 @@ router.get('/sectors', async (req: Request, res: Response, next: NextFunction) =
     }
 })
 
-// all countries sorted asc
-router.get('/countries', async (req: Request, res: Response, next: NextFunction) => {
+/**
+ * @swagger
+ * /countries:
+ *  get:
+ *   description: get all countries sorted asc
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *        description: successful get response
+ */
+router.get('/countries', async (req: Request, res: Response) => {
     try {
         const data = await Emissions.aggregate([
-            { $group: { _id: "$country" } },
+            { $group: { _id: '$country' } },
             { $sort: { _id: 1 } },
         ]);
 
@@ -57,44 +65,63 @@ router.get('/countries', async (req: Request, res: Response, next: NextFunction)
     }
 });
 
-router.get('/countries/:name', async (req: Request, res: Response, next: NextFunction) => {
+// sum all years emmissions for a country
+router.get('/countries/:name', async (req: Request, res: Response) => {
     const { name } = req.params;
 
     try {
-        // const data = await Emissions.find({ country: 'AWB' }, (err, country) => {
-        //     Emissions.aggregate([
-        //         // '{ country: 'AWB'' },
-        //         {
-        //             $group: {
-        //                 _id: "$country",
-        //                 'sum': {
-        //                     $sum: '$emissions.value'
-        //                 }
-        //             }
-        //         }, {
-        //             $project: {
-        //                 'sum': '$sum'
-        //             }
-        //         }
-        //     ]);
-        // });
-
         const data = await Emissions.aggregate([
-            // { $match: { country:name } },
+            {
+                $unwind: '$emissions'
+            },
             {
                 $group: {
-                    _id: "$country",
+                    _id: '$country',
                     'sum': {
                         $sum: '$emissions.value'
                     }
                 }
+            },
+            {
+                $project: { 'sum': '$sum' }
             }
         ]);
 
-        console.log(data);
+        let found = data.filter((item: any) => item._id === name.toUpperCase())[0];
 
-        res.send(name)
-        // if (data) res.status(200).json(data.map((item: any) => item._id));
+        if (data) res.status(200).json({ country: found._id, sum: found.sum });
+    } catch (error) {
+        res.status(400).send(error)
+    }
+});
+
+// a year emission for a country in a sector
+// http://localhost:4000/api/v1/countries/abw/Fuel%20Combustion%20Activities/2000
+router.get('/countries/:country/:sector/:year', async (req: Request, res: Response) => {
+    let { country, sector, year } = req.params;
+    console.log(country, sector, year);
+
+    try {
+        const data = await Emissions.aggregate([
+            {
+                $unwind: '$emissions',
+            },
+            {
+                $match: {
+                    'country': new RegExp(country, 'i'),
+                    'sector': new RegExp(sector, 'i'),
+                    'emissions.year': parseInt(year)
+                }
+            },
+            {
+                $project: {
+                    'emission': '$emissions.value',
+                    '_id': 0
+                }
+            },
+        ]);
+
+        if (data) res.status(200).json(data[0]);
     } catch (error) {
         res.status(400).send(error)
     }
