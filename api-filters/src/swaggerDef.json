@@ -23,13 +23,22 @@
       "description": "Get emissions"
     }
   ],
-  "schemes": ["http", "https"],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/v1": {
       "get": {
-        "tags": ["emissions"],
+        "tags": [
+          "emissions"
+        ],
         "summary": "get all emissions data",
         "responses": {
           "200": {
@@ -49,7 +58,9 @@
         }
       ],
       "get": {
-        "tags": ["emissions"],
+        "tags": [
+          "emissions"
+        ],
         "summary": "sum all years emmissions for a country",
         "responses": {
           "200": {
@@ -57,6 +68,22 @@
           },
           "400": {
             "description": "failed. no data"
+          }
+        }
+      }
+    },
+    "/countries": {
+      "get": {
+        "tags": [
+          "emissions"
+        ],
+        "description": "get all countries sorted asc",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful get response"
           }
         }
       }
@@ -91,5 +118,8 @@
         }
       }
     }
-  }
+  },
+  "responses": {},
+  "parameters": {},
+  "securityDefinitions": {}
 }

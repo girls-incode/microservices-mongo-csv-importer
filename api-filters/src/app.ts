@@ -8,7 +8,7 @@ import connDB from './db';
 
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import * as swaggerDefinition from './swagger.json';
+import * as swaggerDefinition from './swaggerDef.json';
 
 const port = process.env.PORT || 3900;
 

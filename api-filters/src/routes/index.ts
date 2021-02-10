@@ -45,12 +45,13 @@ router.get('/sectors', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /countries:
  *  get:
+ *   tags: ["emissions"]
  *   description: get all countries sorted asc
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *        description: successful get response
+ *   produces:
+ *    - application/json
+ *   responses:
+ *    200:
+ *     description: successful get response
  */
 router.get('/countries', async (req: Request, res: Response) => {
     try {
@@ -96,7 +97,6 @@ router.get('/countries/:name', async (req: Request, res: Response) => {
 });
 
 // a year emission for a country in a sector
-// http://localhost:4000/api/v1/countries/abw/Fuel%20Combustion%20Activities/2000
 router.get('/countries/:country/:sector/:year', async (req: Request, res: Response) => {
     let { country, sector, year } = req.params;
     console.log(country, sector, year);
