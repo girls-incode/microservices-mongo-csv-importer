@@ -1,6 +1,6 @@
-## ExpressJs microservices + MongoDB + Docker Compose
+## Node Microservices + MongoDB + Docker Compose
 
-Build two Express microservices that share the same data storage and have two endpoints:
+Build two Express Microservices that share the same database and have two endpoints:
 1. POST: expects a CSV payload and saves the data to a MongoDB database
 2. GET: reads data from the same database and serves JSON responses. Add Filters on the data as query parameters.
 
