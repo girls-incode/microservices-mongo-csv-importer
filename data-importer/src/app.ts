@@ -4,7 +4,7 @@ import express, {
 import 'dotenv/config';
 
 import router from './routes/index';
-import connDB from './db';
+import connDB from './config/db';
 
 const app:Application = express();
 const port = process.env.PORT || 4000;

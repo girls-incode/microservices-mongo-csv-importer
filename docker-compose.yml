@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  apifilters:
+    build: ./api-filters
+    container_name: apifilters
+    volumes:
+      - ./api-filters:/apifilters
+    ports:
+      - "4000:4000"
+    networks:
+      - micro-app
+    depends_on:
+      - dataimporter
+  dataimporter:
+    build: ./data-importer
+    container_name: dataimporter
+    volumes:
+      - ./data-importer:/dataimporter
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo 
+    networks:
+      - micro-app
+  mongo:
+    image: mongo:3.6.22-xenial
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - micro-app
+    volumes:
+      - mongo-data:/data/db
+networks:
+  micro-app:
+    driver: bridge
+volumes:
+  mongo-data:
+    # driver: local 
