@@ -29,11 +29,15 @@ npm run dev
 ### Test API endpoints
 
 1. CSV Importer
-With a tool like Postman, make a POST request at http://localhost:5000/ 
+
+With a tool like *Postman*, make a POST request at http://localhost:5000/ 
 (it suppose the input file name is 'emissions')
 
-To see the mongo db:
-```
+<kbd><img src="https://github.com/girls-incode/microservices-mongo-csv-importer/blob/master/express-microservice-csv-import-mongodb.jpg" alt="" /></kbd>
+<br/><br/>
+
+To see the mongodb data:
+```shell
 docker exec -it mongodb bash
 mongo
 show dbs
@@ -53,8 +57,13 @@ db.emissions.aggregate([{
 ```
 
 2. API Filters
-See all endpoint at http://localhost:4000/api-docs/
-Test:
+
+See all endpoints at http://localhost:4000/api-docs
+
+<kbd><img src="https://github.com/girls-incode/microservices-mongo-csv-importer/blob/master/express-microservice-swagger-api.jpg" alt="" /></kbd>
+<br/><br/>
+
+Test urls:
 - http://localhost:4000/api/v1/sectors
 - http://localhost:4000/api/v1/countries
 - http://localhost:4000/api/v1/countries/pol
@@ -76,14 +85,14 @@ Test:
 
 > In case that docker get stuck on windows, run:
 
-``` 
+```shell
 wsl -l -v
 wsl --unregister docker-desktop
 ```
 
 #### Other docker commands
 
-```
+```shell
 # start/stop docker
 docker-compose down
 docker-compose up -d
@@ -111,5 +120,4 @@ docker rmi $(docker images -aq)
 # volumes
 docker volume ls
 docker volume rm $(docker volume ls -q)
-
 ```
