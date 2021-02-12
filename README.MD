@@ -12,11 +12,13 @@ It builds 4 images:
 - microservices-mongo-csv-importer_apifilters
 - microservices-mongo-csv-importer_dataimporter 
 - mongo
-- node 
+- node
+
 and 3 containers: 
 - apifilters
 - dataimporter 
 - mongodb
+
 The containers communicate with each other on a network named 'micro-app'.
 
 ### Run each microservice separately
